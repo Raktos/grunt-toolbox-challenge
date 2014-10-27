@@ -13,6 +13,8 @@
         <button type="button" class="btn btn-primary" id="newGameButton">New Game</button>
 
         <p id="elapsedSeconds"></p>
+        <p id="matches"></p>
+        <p id="misses"></p>
 
         <div id="gameBoard"></div>
 
@@ -30,6 +32,19 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">OK, let's go!</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+        <div class="modal fade" id="winModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">You Win!</h4>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Yay!</button>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
