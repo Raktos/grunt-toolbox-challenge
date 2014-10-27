@@ -4,17 +4,40 @@
         <meta charset="UTF-8">
         <title>Memory Game</title>
 
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="css/main.css"/>
     </head>
     <body>
         <h1>Memory Game</h1>
 
+        <button type="button" class="btn btn-primary" id="newGameButton">New Game</button>
+
         <p id="elapsedSeconds"></p>
 
         <div id="gameBoard"></div>
 
+        <div class="modal fade" id="instructionsModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">How to play</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>The game takes place in a series of turns.</p>
+                        <p>Each turn you must select 2 tiles to reveal the image beneath.</p>
+                        <p>If the tiles match they will stay revealed, if they do not they will flip back.</p>
+                        <p>You win when all tiles are revealed.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">OK, let's go!</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
         <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
         <script src="js/app.js"></script>
     </body>
 </html>

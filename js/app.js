@@ -1,6 +1,8 @@
 "use strict";
 
 $(document).ready(function() {
+    $('#instructionsModal').modal();
+
     var tiles = [];
     var  i;
 
@@ -33,15 +35,17 @@ $(document).ready(function() {
     //begin populating the gameboard
     var gameBoard = $('#gameBoard');
     var row = $(document.createElement('div'));
+    row.addClass('gameRow');
     var img; //TODO ask about this
 
-    //TODO string for he key 'tile' is used more than once, create a defined variable for it
+    //TODO string for the key 'tile' is used more than once, create a defined variable for it
     //populate the gameboard
     _.forEach(tilePairs, function(tile, elemIndex) {
         //create a new row every 4 tiles (max 4 tiles per row)
         if(elemIndex > 0 && 0 == elemIndex % 4) {
             gameBoard.append(row);
             row = $(document.createElement('div'));
+            row.addClass('gameRow');
         }
 
         //create image and append it to the current row
