@@ -4,13 +4,14 @@ $(document).ready(function() {
     $('#instructionsModal').modal();
 
     var gameBoard = $('#gameBoard');
+    var stats = $('#stats');
     var tileBackSrc = 'img/tile-back.png';
     var timer;
     var matches;
     var misses;
     var prevTile;
     var prevImg;
-    var checkMatch;
+    var tilesFlipped = 0;
     var win = false;
 
     var  i;
@@ -24,21 +25,20 @@ $(document).ready(function() {
         });
     }
 
-    $('#newGameButton').click(function() {
-        win = false;
-        checkMatch = true;
-        matches = 0;
-        misses = 0;
-        $('#matches').text(matches + ' matches');
-        $('#misses').text(misses + ' misses');
+    $(window).resize(function() {
+        gameBoard.find('img').css({'height':window.innerWidth * 0.15 + 'px', 'width':window.innerWidth * 0.15 + 'px'});
+    });
+
+    $('.newGameButton').click(function() {
         populateBoard();
-        startTimer();
+        initStats();
         gameplay();
     });
 
     function populateBoard() {
         //clear old gameBoard
         $(gameBoard).empty();
+        gameBoard.fadeOut(250);
 
         //shuffle the tiles
         console.log(tiles);
@@ -84,6 +84,10 @@ $(document).ready(function() {
             row.append(img);
         });
         gameBoard.append(row);
+
+        gameBoard.find('img').css({'height':window.innerWidth * 0.15 + 'px', 'width':window.innerWidth * 0.15 + 'px'});
+
+        gameBoard.fadeIn(250);
     }
 
     //TODO animations on check are going way too fast
@@ -93,20 +97,21 @@ $(document).ready(function() {
             var img = $(this);
             var tile = img.data('tile');
 
-            if(!tile.flipped) {
+            if(!tile.flipped && tilesFlipped < 2) {
                 animateFlip(img, tile);
-                checkMatch = !checkMatch;
+                ++tilesFlipped;
 
-                if(checkMatch) {
+                if(2 == tilesFlipped) {
                     if(tile.src == prevTile.src) {
                         ++matches;
+                        tilesFlipped = 0;
                     } else {
                         ++misses;
                         setTimeout(function() {
-                            animateFlip(img, tile); //TODO get setTimeout working
+                            animateFlip(img, tile);
                             animateFlip(prevImg, prevTile);
-                        }, 1500);
-
+                            tilesFlipped = 0;
+                        }, 1000);
                     }
                 } else {
                     prevTile = tile;
@@ -158,5 +163,18 @@ $(document).ready(function() {
                 window.clearInterval(timer);
             }
         }, 1000);
+    }
+
+    function initStats() {
+        stats.fadeOut(250, function() {
+            win = false;
+            tilesFlipped = 0;
+            matches = 0;
+            misses = 0;
+            $('#matches').text(matches + ' matches');
+            $('#misses').text(misses + ' misses');
+            startTimer();
+            stats.fadeIn(250);
+        });
     }
 }); //onReady

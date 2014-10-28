@@ -1,3 +1,15 @@
+body {
+    padding: 1em;
+}
+
+#gameBoard, #stats {
+    display: none;
+}
+
+#gameBoard {
+    float: left;
+}
+
 #gameBoard img {
     width: 200px;
     height: 200px;

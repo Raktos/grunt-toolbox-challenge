@@ -10,13 +10,14 @@
     <body>
         <h1>Memory Game</h1>
 
-        <button type="button" class="btn btn-primary" id="newGameButton">New Game</button>
-
-        <p id="elapsedSeconds"></p>
-        <p id="matches"></p>
-        <p id="misses"></p>
-
         <div id="gameBoard"></div>
+
+        <div id="stats">
+            <button type="button" class="btn btn-primary newGameButton">Start New Game</button>
+            <p id="elapsedSeconds"></p>
+            <p id="matches"></p>
+            <p id="misses"></p>
+        </div>
 
         <div class="modal fade" id="instructionsModal">
             <div class="modal-dialog">
@@ -31,7 +32,7 @@
                         <p>You win when all tiles are revealed.</p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">OK, let's go!</button>
+                        <button type="button" class="btn btn-primary newGameButton" data-dismiss="modal">OK, let's go!</button>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
