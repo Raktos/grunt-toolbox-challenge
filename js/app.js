@@ -102,8 +102,11 @@ $(document).ready(function() {
                         ++matches;
                     } else {
                         ++misses;
-                        window.setTimeout(animateFlip(img, tile), 1000); //TODO get setTimout working
-                        window.setTimeout(animateFlip(prevImg, prevTile), 1000);
+                        setTimeout(function() {
+                            animateFlip(img, tile); //TODO get setTimeout working
+                            animateFlip(prevImg, prevTile);
+                        }, 1500);
+
                     }
                 } else {
                     prevTile = tile;
