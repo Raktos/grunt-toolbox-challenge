@@ -30,7 +30,7 @@ $(document).ready(function() {
     //resize tiles on window resize event
     $(window).resize(tileScale);
 
-    //TODO button still starts new game. It shouldn't if the modal was opened by clicking help instead of page load
+    //Opens instructions dialogue, changed buttons
     $('.helpButton').click(function() {
         var helpModal = $('#helpModal');
         helpModal.find('.newGameButton').css('display', 'none');
