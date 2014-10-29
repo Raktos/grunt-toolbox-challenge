@@ -8,23 +8,27 @@
         <link rel="stylesheet" href="css/main.css"/>
     </head>
     <body>
-        <main>
+        <header>
             <h1>Memory Game</h1>
+        </header>
 
-            <div id="gameArea">
-                <div id="gameBoard"></div>
+        <main>
+            <div id="gameBoard"></div>
 
-                <div id="stats">
-                    <h2>Score</h2>
-                    <p id="elapsedSeconds"></p>
-                    <p id="matches"></p>
-                    <p id="misses"></p>
-                    <button type="button" class="btn btn-primary newGameButton">Start New Game</button>
-                </div>
+            <div id="stats">
+                <h2>Score</h2>
+                <p id="elapsedSeconds"></p>
+                <p id="matches"></p>
+                <p id="misses"></p>
             </div>
         </main>
 
-        <div class="modal fade" id="instructionsModal">
+        <footer>
+            <button type="button" class="btn btn-primary newGameButton">Start New Game</button>
+            <button type="button" class="btn btn-default helpButton">Help</button>
+        </footer>
+
+        <div class="modal fade" id="helpModal">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">

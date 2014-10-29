@@ -1,7 +1,8 @@
 "use strict";
 
 $(document).ready(function() {
-    $('#instructionsModal').modal();
+    //open instructions on page load
+    $('#helpModal').modal();
 
     var gameBoard = $('#gameBoard');
     var stats = $('#stats');
@@ -25,14 +26,23 @@ $(document).ready(function() {
         });
     }
 
+    //resize tiles on window resize event
     $(window).resize(tileScale);
 
+    //TODO button still starts new game. It shouldn't if the modal was opened by clicking help instead of page load
+    $('.helpButton').click(function() {
+        $('#helpModal').find('button').attr('class', 'btn btn-default');
+        $('#helpModal').modal();
+    });
+
+    //start a new game
     $('.newGameButton').click(function() {
         populateBoard();
         initStats();
         gameplay();
     });
 
+    //create a fill a gameboard
     function populateBoard() {
         //clear old gameBoard
         $(gameBoard).empty();
@@ -88,7 +98,7 @@ $(document).ready(function() {
         gameBoard.fadeIn(250);
     }
 
-    //TODO animations on check are going way too fast
+    //runs the game
     function gameplay() {
         //flip tiles on click
         $('#gameBoard').find('img').click(function() {
@@ -98,15 +108,18 @@ $(document).ready(function() {
             var prevImg;
             var prevTile;
 
+            //only flip if he tile was upside down
             if(!tile.flipped) {
                 animateFlip(img, tile);
                 tileFlipArr.push(img);
                 flipNum = tileFlipArr.length;
 
+                //if this is an even tile flip
                 if(0 == flipNum % 2) {
                     prevImg = tileFlipArr[flipNum - 2];
                     prevTile = prevImg.data('tile');
 
+                    //check for a matched pair
                     if(tile.tileNum == prevTile.tileNum) {
                         ++matches;
                     } else {
@@ -116,12 +129,11 @@ $(document).ready(function() {
                             animateFlip(prevImg, prevTile);
                         }, 1000);
                     }
-                } else {
                 }
             }
 
-            $('#matches').text(matches + ' matches');
-            $('#misses').text(misses + ' misses');
+            $('#matches').text('Matches: ' + matches);
+            $('#misses').text('Misses: ' + misses);
 
             if(matches >= 8) {
                 win = true;
@@ -131,7 +143,7 @@ $(document).ready(function() {
                 window.clearInterval(timer);
                 $('#winModal').modal();
             }
-        }); //onClick of gameBoard tiles
+        }); //gameplay
     }
 
     //animate the flip
@@ -148,6 +160,7 @@ $(document).ready(function() {
     }
 
 
+    //start a timer
     function startTimer() {
         //stop old timer
         window.clearInterval(timer);
@@ -166,8 +179,11 @@ $(document).ready(function() {
         }, 1000);
     }
 
+    //initialize stats
     function initStats() {
+        //fade out before changing anything
         stats.fadeOut(250, function() {
+            //reset stats to 0
             win = false;
             matches = 0;
             misses = 0;
@@ -181,15 +197,20 @@ $(document).ready(function() {
         });
     }
 
+    //scale tiles to window size
     function tileScale() {
         var width = window.innerWidth * 0.15;
         var height = window.innerHeight * 0.2;
         var edge;
+
+        //pick the smaller of relative height or width
         if(width < height) {
             edge = width;
         } else {
             edge = height;
         }
+
+        //set image sizing
         gameBoard.find('img').css({
             'height':edge + 'px',
             'width':edge + 'px',
