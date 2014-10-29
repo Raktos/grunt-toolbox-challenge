@@ -22,7 +22,8 @@ $(document).ready(function() {
     for(i = 1; i <= 32; ++i) {
         tiles.push({
             tileNum: i,
-            src: 'img/tile' + i + '.jpg'
+            src: 'img/tile' + i + '.jpg',
+            flipped: false
         });
     }
 
@@ -71,7 +72,7 @@ $(document).ready(function() {
         row.addClass('gameRow');
         var img;
 
-        //TODO string for the key 'tile' is used more than once, create a defined variable for it
+        //TODO string for the key 'tile' is used more than once, create a defined variable for it maybe
         //populate the gameboard
         _.forEach(tilePairs, function(tile, elemIndex) {
             //create a new row every 4 tiles (max 4 tiles per row)
@@ -98,10 +99,10 @@ $(document).ready(function() {
         gameBoard.fadeIn(250);
     }
 
-    //runs the game
+    //registers clicks event to all tiles
     function gameplay() {
         //flip tiles on click
-        $('#gameBoard').find('img').click(function() {
+        gameBoard.find('img').click(function() {
             var img = $(this);
             var tile = img.data('tile');
             var flipNum;
@@ -127,12 +128,12 @@ $(document).ready(function() {
                         setTimeout(function() {
                             animateFlip(img, tile);
                             animateFlip(prevImg, prevTile);
-                        }, 1000);
+                        }, 750);
                     }
                 }
             }
 
-            $('#matches').text('Matches: ' + matches);
+            $('#matches').text('Matches: ' + matches + ' (' + (8 - matches) + ' left)');
             $('#misses').text('Misses: ' + misses);
 
             if(matches >= 8) {
@@ -190,7 +191,7 @@ $(document).ready(function() {
 
             tileFlipArr = [];
 
-            $('#matches').text('Matches: ' + matches);
+            $('#matches').text('Matches: ' + matches + ' (' + (8 - matches) + ' left)');
             $('#misses').text('Misses: ' + misses);
             startTimer();
             stats.fadeIn(250);
@@ -198,11 +199,13 @@ $(document).ready(function() {
     }
 
     //scale tiles to window size
+    //also scales columns
     function tileScale() {
         var width = window.innerWidth * 0.15;
         var height = window.innerHeight * 0.2;
         var edge;
 
+        //TODO column size scaling
         //pick the smaller of relative height or width
         if(width < height) {
             edge = width;
