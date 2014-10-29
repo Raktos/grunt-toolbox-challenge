@@ -25,9 +25,7 @@ $(document).ready(function() {
         });
     }
 
-    $(window).resize(function() {
-        gameBoard.find('img').css({'height':window.innerWidth * 0.15 + 'px', 'width':window.innerWidth * 0.15 + 'px'});
-    });
+    $(window).resize(tileScale);
 
     $('.newGameButton').click(function() {
         populateBoard();
@@ -61,7 +59,7 @@ $(document).ready(function() {
         //begin populating the gameboard
         var row = $(document.createElement('div'));
         row.addClass('gameRow');
-        var img; //TODO ask about this
+        var img;
 
         //TODO string for the key 'tile' is used more than once, create a defined variable for it
         //populate the gameboard
@@ -85,7 +83,7 @@ $(document).ready(function() {
         });
         gameBoard.append(row);
 
-        gameBoard.find('img').css({'height':window.innerWidth * 0.15 + 'px', 'width':window.innerWidth * 0.15 + 'px'});
+        tileScale();
 
         gameBoard.fadeIn(250);
     }
@@ -102,7 +100,7 @@ $(document).ready(function() {
                 ++tilesFlipped;
 
                 if(2 == tilesFlipped) {
-                    if(tile.src == prevTile.src) {
+                    if(tile.tileNum == prevTile.tileNum) {
                         ++matches;
                         tilesFlipped = 0;
                     } else {
@@ -150,13 +148,13 @@ $(document).ready(function() {
     function startTimer() {
         //stop old timer
         window.clearInterval(timer);
-        $('#elapsedSeconds').text(0 + ' seconds');
+        $('#elapsedSeconds').text('Time: ' + 0 + ' seconds');
 
         //start new timer
         var startTime = _.now();
         timer = window.setInterval(function() {
             var elapsedSeconds = Math.floor((_.now() - startTime) / 1000);
-            $('#elapsedSeconds').text(elapsedSeconds + ' seconds');
+            $('#elapsedSeconds').text('Time: ' + elapsedSeconds + ' seconds');
 
             //stop the timer at 10 seconds
             if(win) {
@@ -171,10 +169,28 @@ $(document).ready(function() {
             tilesFlipped = 0;
             matches = 0;
             misses = 0;
-            $('#matches').text(matches + ' matches');
-            $('#misses').text(misses + ' misses');
+            $('#matches').text('Matches: ' + matches);
+            $('#misses').text('Misses: ' + misses);
             startTimer();
             stats.fadeIn(250);
+        });
+    }
+
+    function tileScale() {
+        var width = window.innerWidth * 0.15;
+        var height = window.innerHeight * 0.2;
+        var edge;
+        if(width < height) {
+            edge = width;
+        } else {
+            edge = height;
+        }
+        gameBoard.find('img').css({
+            'height':edge + 'px',
+            'width':edge + 'px',
+            'border-radius':edge / 20 + 'px',
+            'margin-right':edge / 40 + 'px',
+            'margin-bottom':edge / 40 + 'px'
         });
     }
 }); //onReady

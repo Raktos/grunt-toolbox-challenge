@@ -1,5 +1,17 @@
 body {
-    padding: 1em;
+    background-color: #000;
+}
+main {
+    color: #DDD;
+}
+
+#gameArea, main h1 {
+    padding: 0 10%;
+}
+
+main h1 {
+    margin-bottom: 1em;
+    background-color: aqua;
 }
 
 #gameBoard, #stats {
@@ -14,8 +26,7 @@ body {
     width: 200px;
     height: 200px;
     margin-right: 5px;
-}
-
-.gameRow {
     margin-bottom: 5px;
+    border: 2px solid #000;
+    border-radius: 10px;
 }
