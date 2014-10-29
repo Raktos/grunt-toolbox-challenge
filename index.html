@@ -15,17 +15,24 @@
         <main>
             <div id="gameBoard"></div>
 
-            <div id="stats">
-                <h2>Score</h2>
-                <p id="elapsedSeconds"></p>
-                <p id="matches"></p>
-                <p id="misses"></p>
+            <div id="statControlWrap">
+                <div id="stats">
+                    <h2>Score</h2>
+                    <p id="elapsedSeconds"></p>
+                    <p id="matches"></p>
+                    <p id="misses"></p>
+                </div>
+
+                <div id="controls">
+                    <button type="button" class="btn btn-primary newGameButton">Start New Game</button>
+                    <button type="button" class="btn btn-info helpButton">Help</button>
+                </div>
             </div>
         </main>
 
+        <!--TODO maybe don't need the footer...-->
         <footer>
-            <button type="button" class="btn btn-primary newGameButton">Start New Game</button>
-            <button type="button" class="btn btn-info helpButton">Help</button>
+            <p>copyright stuff</p>
         </footer>
 
         <div class="modal fade" id="helpModal">
@@ -54,6 +61,7 @@
                     <div class="modal-header">
                         <h4 class="modal-title">You Win!</h4>
                     </div>
+                    <div class="modal-body"><p></p></div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-info" data-dismiss="modal">Yay!</button>
                     </div>

@@ -5,7 +5,7 @@ $(document).ready(function() {
     $('#helpModal').modal();
 
     var gameBoard = $('#gameBoard');
-    var stats = $('#stats');
+    var stats = $('#statControlWrap');
     var tileBackSrc = 'img/tile-back.png';
     var timer;
     var matches;
@@ -13,7 +13,7 @@ $(document).ready(function() {
 
     var tileFlipArr;
 
-    var win = false;
+//    var win = false;
 
     var  i;
 
@@ -84,6 +84,7 @@ $(document).ready(function() {
                 row.addClass('gameRow');
             }
 
+            //TODO this will have to be changed for 3d transforms
             //create image and append it to the current row
             img = $(document.createElement('img'));
             img.attr({
@@ -130,7 +131,7 @@ $(document).ready(function() {
                         setTimeout(function() {
                             animateFlip(img, tile);
                             animateFlip(prevImg, prevTile);
-                        }, 750);
+                        }, 750); //1 second was too long.
                     }
                 }
             }
@@ -139,16 +140,17 @@ $(document).ready(function() {
             $('#misses').text('Misses: ' + misses);
 
             if(matches >= 8) {
-                win = true;
+                win();
             }
 
-            if(win) {
-                window.clearInterval(timer);
-                $('#winModal').modal();
-            }
+//            if(win) {
+//                window.clearInterval(timer);
+//                $('#winModal').modal();
+//            }
         }); //gameplay
     }
 
+    //TODO http://davidwalsh.name/css-flip go there learn to 3d transform
     //animate the flip
     function animateFlip(img, tile) {
         img.fadeOut(100, function() {
@@ -176,9 +178,9 @@ $(document).ready(function() {
             $('#elapsedSeconds').text('Time: ' + elapsedSeconds + ' seconds');
 
             //stop the timer at 10 seconds
-            if(win) {
-                window.clearInterval(timer);
-            }
+//            if(win) {
+//                window.clearInterval(timer);
+//            }
         }, 1000);
     }
 
@@ -187,7 +189,7 @@ $(document).ready(function() {
         //fade out before changing anything
         stats.fadeOut(250, function() {
             //reset stats to 0
-            win = false;
+//            win = false;
             matches = 0;
             misses = 0;
 
@@ -207,7 +209,6 @@ $(document).ready(function() {
         var height = window.innerHeight * 0.2;
         var edge;
 
-        //TODO column size scaling
         //pick the smaller of relative height or width
         if(width < height) {
             edge = width;
@@ -223,5 +224,16 @@ $(document).ready(function() {
             'margin-right':edge / 40 + 'px',
             'margin-bottom':edge / 40 + 'px'
         });
+    }
+
+    function win() {
+        var winModal = $('#winModal');
+
+        window.clearInterval(timer);
+        winModal.find('p').text(
+            'Congratulations! You won in ' +
+            $('#elapsedSeconds').text().replace(/\D/g, '') + ' seconds with ' +
+            misses + ' misses for a total of ' + tileFlipArr.length / 2 + ' turns!');
+        winModal.modal();
     }
 }); //onReady

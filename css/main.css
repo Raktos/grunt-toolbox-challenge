@@ -22,9 +22,13 @@ footer {
     border: none;
 }
 
-#gameBoard, #stats {
+#gameBoard, #statControlWrap {
     display: none;
     float: left;
+}
+
+#controls {
+    margin-top: 5px;
 }
 
 #stats {
