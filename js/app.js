@@ -32,8 +32,10 @@ $(document).ready(function() {
 
     //TODO button still starts new game. It shouldn't if the modal was opened by clicking help instead of page load
     $('.helpButton').click(function() {
-        $('#helpModal').find('button').attr('class', 'btn btn-default');
-        $('#helpModal').modal();
+        var helpModal = $('#helpModal');
+        helpModal.find('.newGameButton').css('display', 'none');
+        helpModal.find('.helpDismissButton').css('display', 'inline');
+        helpModal.modal();
     });
 
     //start a new game
@@ -97,7 +99,7 @@ $(document).ready(function() {
         tileScale();
 
         gameBoard.fadeIn(250);
-    }
+    } //populateBoard()
 
     //registers clicks event to all tiles
     function gameplay() {
