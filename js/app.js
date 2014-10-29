@@ -9,9 +9,9 @@ $(document).ready(function() {
     var timer;
     var matches;
     var misses;
-    var prevTile;
-    var prevImg;
-    var tilesFlipped = 0;
+
+    var tileFlipArr;
+
     var win = false;
 
     var  i;
@@ -94,26 +94,29 @@ $(document).ready(function() {
         $('#gameBoard').find('img').click(function() {
             var img = $(this);
             var tile = img.data('tile');
+            var flipNum;
+            var prevImg;
+            var prevTile;
 
-            if(!tile.flipped && tilesFlipped < 2) {
+            if(!tile.flipped) {
                 animateFlip(img, tile);
-                ++tilesFlipped;
+                tileFlipArr.push(img);
+                flipNum = tileFlipArr.length;
 
-                if(2 == tilesFlipped) {
+                if(0 == flipNum % 2) {
+                    prevImg = tileFlipArr[flipNum - 2];
+                    prevTile = prevImg.data('tile');
+
                     if(tile.tileNum == prevTile.tileNum) {
                         ++matches;
-                        tilesFlipped = 0;
                     } else {
                         ++misses;
                         setTimeout(function() {
                             animateFlip(img, tile);
                             animateFlip(prevImg, prevTile);
-                            tilesFlipped = 0;
                         }, 1000);
                     }
                 } else {
-                    prevTile = tile;
-                    prevImg = img;
                 }
             }
 
@@ -166,9 +169,11 @@ $(document).ready(function() {
     function initStats() {
         stats.fadeOut(250, function() {
             win = false;
-            tilesFlipped = 0;
             matches = 0;
             misses = 0;
+
+            tileFlipArr = [];
+
             $('#matches').text('Matches: ' + matches);
             $('#misses').text('Misses: ' + misses);
             startTimer();
