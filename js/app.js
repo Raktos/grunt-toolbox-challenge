@@ -11,9 +11,8 @@ $(document).ready(function() {
     var matches;
     var misses;
 
+    //for storing previous moves
     var tileFlipArr;
-
-//    var win = false;
 
     var  i;
 
@@ -23,7 +22,7 @@ $(document).ready(function() {
         tiles.push({
             tileNum: i,
             src: 'img/tile' + i + '.jpg',
-            flipped: false
+            faceUp: false
         });
     }
 
@@ -74,10 +73,10 @@ $(document).ready(function() {
         row.addClass('gameRow');
         var tileElem;
         var flipper;
-        var front;
         var back;
-        var frontImg;
+        var face;
         var backImg;
+        var faceImg;
 
         //TODO string for the key 'tile' is used more than once, create a defined variable for it maybe
         //populate the gameboard
@@ -89,38 +88,38 @@ $(document).ready(function() {
                 row.addClass('gameRow');
             }
 
-            //TODO frontImg and backImg may not be entirely necessary
+            //TODO backImg and faceImg may not be entirely necessary
             //create each element used in a tile
             tileElem = $(document.createElement('div'));
             flipper = $(document.createElement('div'));
-            front = $(document.createElement('div'));
             back = $(document.createElement('div'));
-            frontImg= $(document.createElement('img'));
-            backImg = $(document.createElement('img'));
+            face = $(document.createElement('div'));
+            backImg= $(document.createElement('img'));
+            faceImg = $(document.createElement('img'));
 
             //assign each element its necessary class
             tileElem.addClass('flipContainer');
             flipper.addClass('flipper');
-            front.addClass('front');
             back.addClass('back');
-            frontImg.addClass('frontImg');
+            face.addClass('face');
             backImg.addClass('backImg');
+            faceImg.addClass('faceImg');
 
             //put all the pieces together
             tileElem.append(flipper);
-            flipper.append(front, back);
-            front.append(frontImg);
+            flipper.append(back, face);
             back.append(backImg);
+            face.append(faceImg);
 
             //assign the tile data to the container that accepts the click event
             tileElem.data('tile', tile);
 
             //assign the images
-            frontImg.attr({
+            backImg.attr({
                 src: tileBackSrc,
                 alt: 'tile backside'
             });
-            backImg.attr({
+            faceImg.attr({
                 src: tile.src,
                 alt: 'image of tile ' + tile.tileNum
             });
@@ -146,7 +145,7 @@ $(document).ready(function() {
             var prevTile;
 
             //only flip if he tile was upside down
-            if(!tile.flipped) {
+            if(!tile.faceUp) {
                 animateFlip(tileElem, tile);
                 tileFlipArr.push(tileElem);
                 flipNum = tileFlipArr.length;
@@ -180,7 +179,7 @@ $(document).ready(function() {
     //animate the flip
     function animateFlip(tileElem, tile) {
         tileElem.find('.flipper').toggleClass('flipperFlip');
-        tile.flipped = !tile.flipped;
+        tile.faceUp = !tile.faceUp;
     }
 
 
@@ -241,7 +240,7 @@ $(document).ready(function() {
             'margin-bottom':edge / 40 + 'px'
         });
 
-        gameBoard.find('.flipContainer, .flipper, .front, .back, .frontImg, .backImg').css({
+        gameBoard.find('.flipContainer, .flipper, .back, .face, .backImg, .faceImg').css({
             'height':edge + 'px',
             'width':edge + 'px',
             'border-radius':edge / 20 + 'px'

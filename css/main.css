@@ -50,7 +50,7 @@ main {
     margin-top: 0;
 }
 
-.flipContainer, .flipper, .front, .back, .frontImg, .backImg {
+.flipContainer, .flipper, .back, .face, .backImg, .faceImg {
     width: 200px;
     height: 200px;
 }
@@ -105,7 +105,7 @@ main {
     position:relative;
 }
 
-.front, .back {
+.back, .face {
     /*backface-visibility*/
     -webkit-backface-visibility:hidden;
     -moz-backface-visibility:hidden;
@@ -118,7 +118,7 @@ main {
     left:0;
 }
 
-.front {
+.back {
     z-index:2;
     /*transform*/
     -webkit-transform:rotateY(0deg);
@@ -128,7 +128,7 @@ main {
     transform:rotateY(0deg);
 }
 
-.back {
+.face {
     /*transform*/
     -webkit-transform:rotateY(180deg);
     -moz-transform:rotateY(180deg);
