@@ -1,21 +1,25 @@
 body {
     background-color: #000;
+    vertical-align: top;
 }
 main, header, footer {
     color: #DDD;
 }
 
-main {
-    padding: 1em 10%;
-    clear: both;
+header {
+    margin-left: 1em;
 }
 
-footer {
-    clear: both;
+main {
+    padding-left: 10%;
 }
 
 .btn-info {
     background-color: #897A7A;
+}
+
+.btn-info:hover {
+    background-color: #5D5050;
 }
 
 .btn {
@@ -25,6 +29,10 @@ footer {
 #gameBoard, #statControlWrap {
     display: none;
     float: left;
+}
+
+#gameBoard {
+    margin: 0 5px 5px 0;
 }
 
 #controls {
@@ -42,9 +50,12 @@ footer {
     margin-top: 0;
 }
 
-#gameBoard img {
+.flipContainer, .flipper, .front, .back, .frontImg, .backImg {
     width: 200px;
     height: 200px;
+}
+
+.flipContainer {
     margin-right: 5px;
     margin-bottom: 5px;
     border: 2px solid #000;
@@ -53,4 +64,75 @@ footer {
 
 .helpDismissButton {
     display: none;
+}
+
+/*3d transform styling*/
+
+.flipContainer {
+    /*perspective*/
+    -webkit-perspective:1000;
+    -moz-perspective:1000;
+    -ms-perspective:1000;
+    -o-perspective:1000;
+    perspective:1000;
+
+    float: left;
+}
+
+.flipperFlip {
+    /*transform*/
+    -webkit-transform:rotateY(180deg);
+    -moz-transform:rotateY(180deg);
+    -ms-transform:rotateY(180deg);
+    -o-transform:rotateY(180deg);
+    transform:rotateY(180deg);
+}
+
+.flipper{
+    /*transition*/
+    -webkit-transition:0.25s;
+    -moz-transition:0.25s;
+    -o-transition:0.25s;
+    transition:0.25s;
+
+    /*transform-style*/
+    -webkit-transform-style:preserve-3d;
+    -moz-transform-style:preserve-3d;
+    -ms-transform-style:preserve-3d;
+    -o-transform-style:preserve-3d;
+    transform-style:preserve-3d;
+
+    position:relative;
+}
+
+.front, .back {
+    /*backface-visibility*/
+    -webkit-backface-visibility:hidden;
+    -moz-backface-visibility:hidden;
+    -ms-backface-visibility:hidden;
+    -o-backface-visibility:hidden;
+    backface-visibility:hidden;
+
+    position:absolute;
+    top:0;
+    left:0;
+}
+
+.front {
+    z-index:2;
+    /*transform*/
+    -webkit-transform:rotateY(0deg);
+    -moz-transform:rotateY(0deg);
+    -ms-transform:rotateY(0deg);
+    -o-transform:rotateY(0deg);
+    transform:rotateY(0deg);
+}
+
+.back {
+    /*transform*/
+    -webkit-transform:rotateY(180deg);
+    -moz-transform:rotateY(180deg);
+    -ms-transform:rotateY(180deg);
+    -o-transform:rotateY(180deg);
+    transform:rotateY(180deg);
 }

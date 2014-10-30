@@ -72,7 +72,12 @@ $(document).ready(function() {
         //begin populating the gameboard
         var row = $(document.createElement('div'));
         row.addClass('gameRow');
-        var img;
+        var tileElem;
+        var flipper;
+        var front;
+        var back;
+        var frontImg;
+        var backImg;
 
         //TODO string for the key 'tile' is used more than once, create a defined variable for it maybe
         //populate the gameboard
@@ -84,18 +89,46 @@ $(document).ready(function() {
                 row.addClass('gameRow');
             }
 
-            //TODO this will have to be changed for 3d transforms
-            //create image and append it to the current row
-            img = $(document.createElement('img'));
-            img.attr({
+            //TODO frontImg and backImg may not be entirely necessary
+            //create each element used in a tile
+            tileElem = $(document.createElement('div'));
+            flipper = $(document.createElement('div'));
+            front = $(document.createElement('div'));
+            back = $(document.createElement('div'));
+            frontImg= $(document.createElement('img'));
+            backImg = $(document.createElement('img'));
+
+            //assign each element its necessary class
+            tileElem.addClass('flipContainer');
+            flipper.addClass('flipper');
+            front.addClass('front');
+            back.addClass('back');
+            frontImg.addClass('frontImg');
+            backImg.addClass('backImg');
+
+            //put all the pieces together
+            tileElem.append(flipper);
+            flipper.append(front, back);
+            front.append(frontImg);
+            back.append(backImg);
+
+            //assign the tile data to the container that accepts the click event
+            tileElem.data('tile', tile);
+
+            //assign the images
+            frontImg.attr({
                 src: tileBackSrc,
+                alt: 'tile backside'
+            });
+            backImg.attr({
+                src: tile.src,
                 alt: 'image of tile ' + tile.tileNum
             });
 
-            img.data('tile', tile);
-            row.append(img);
+            //put the tile in the row
+            row.append(tileElem);
         });
-        gameBoard.append(row);
+        gameBoard.append(row); // finish gameboard population
 
         tileScale();
 
@@ -104,24 +137,24 @@ $(document).ready(function() {
 
     //registers clicks event to all tiles
     function gameplay() {
-        //flip tiles on click
-        gameBoard.find('img').click(function() {
-            var img = $(this);
-            var tile = img.data('tile');
+        //initiates game play on click
+        gameBoard.find('.flipContainer').click(function() {
+            var tileElem = $(this);
+            var tile = tileElem.data('tile');
             var flipNum;
-            var prevImg;
+            var prevTileElem;
             var prevTile;
 
             //only flip if he tile was upside down
             if(!tile.flipped) {
-                animateFlip(img, tile);
-                tileFlipArr.push(img);
+                animateFlip(tileElem, tile);
+                tileFlipArr.push(tileElem);
                 flipNum = tileFlipArr.length;
 
                 //if this is an even tile flip
                 if(0 == flipNum % 2) {
-                    prevImg = tileFlipArr[flipNum - 2];
-                    prevTile = prevImg.data('tile');
+                    prevTileElem = tileFlipArr[flipNum - 2];
+                    prevTile = prevTileElem.data('tile');
 
                     //check for a matched pair
                     if(tile.tileNum == prevTile.tileNum) {
@@ -129,39 +162,25 @@ $(document).ready(function() {
                     } else {
                         ++misses;
                         setTimeout(function() {
-                            animateFlip(img, tile);
-                            animateFlip(prevImg, prevTile);
+                            animateFlip(tileElem, tile);
+                            animateFlip(prevTileElem, prevTile);
                         }, 750); //1 second was too long.
                     }
                 }
+                $('#matches').text('Matches: ' + matches + ' (' + (8 - matches) + ' left)');
+                $('#misses').text('Misses: ' + misses);
             }
-
-            $('#matches').text('Matches: ' + matches + ' (' + (8 - matches) + ' left)');
-            $('#misses').text('Misses: ' + misses);
 
             if(matches >= 8) {
                 win();
             }
-
-//            if(win) {
-//                window.clearInterval(timer);
-//                $('#winModal').modal();
-//            }
         }); //gameplay
     }
 
-    //TODO http://davidwalsh.name/css-flip go there learn to 3d transform
     //animate the flip
-    function animateFlip(img, tile) {
-        img.fadeOut(100, function() {
-            if(tile.flipped) {
-                img.attr('src', tileBackSrc);
-            } else {
-                img.attr('src', tile.src);
-            }
-            img.fadeIn(100);
-            tile.flipped = !tile.flipped;
-        }); //after fadeOut
+    function animateFlip(tileElem, tile) {
+        tileElem.find('.flipper').toggleClass('flipperFlip');
+        tile.flipped = !tile.flipped;
     }
 
 
@@ -217,15 +236,19 @@ $(document).ready(function() {
         }
 
         //set image sizing
-        gameBoard.find('img').css({
-            'height':edge + 'px',
-            'width':edge + 'px',
-            'border-radius':edge / 20 + 'px',
+        gameBoard.find('.flipContainer').css({
             'margin-right':edge / 40 + 'px',
             'margin-bottom':edge / 40 + 'px'
         });
+
+        gameBoard.find('.flipContainer, .flipper, .front, .back, .frontImg, .backImg').css({
+            'height':edge + 'px',
+            'width':edge + 'px',
+            'border-radius':edge / 20 + 'px'
+        });
     }
 
+    //display win information
     function win() {
         var winModal = $('#winModal');
 

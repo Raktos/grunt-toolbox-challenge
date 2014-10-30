@@ -2,14 +2,14 @@
 <html>
     <head lang="en">
         <meta charset="UTF-8">
-        <title>Memory Game</title>
+        <title>Memory Game!</title>
 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="css/main.css"/>
     </head>
     <body>
         <header>
-            <h1>Memory Game</h1>
+            <h1>Memory Game! (not just for kids!)</h1>
         </header>
 
         <main>
@@ -21,19 +21,14 @@
                     <p id="elapsedSeconds"></p>
                     <p id="matches"></p>
                     <p id="misses"></p>
-                </div>
+                </div> <!-- /stats -->
 
                 <div id="controls">
                     <button type="button" class="btn btn-primary newGameButton">Start New Game</button>
                     <button type="button" class="btn btn-info helpButton">Help</button>
-                </div>
-            </div>
+                </div><!-- /controls -->
+            </div> <!-- /statControlWrap -->
         </main>
-
-        <!--TODO maybe don't need the footer...-->
-        <footer>
-            <p>copyright stuff</p>
-        </footer>
 
         <div class="modal fade" id="helpModal">
             <div class="modal-dialog">
@@ -49,7 +44,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary newGameButton" data-dismiss="modal">OK, let's go!</button>
-                        <button type="button" class="btn btn-info helpDismissButton" data-dismiss="modal">Ok!</button>
+                        <button type="button" class="btn btn-info helpDismissButton" data-dismiss="modal">Ok</button>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
@@ -63,7 +58,8 @@
                     </div>
                     <div class="modal-body"><p></p></div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-info" data-dismiss="modal">Yay!</button>
+                        <button type="button" class="btn btn-primary newGameButton" data-dismiss="modal">Play Again!</button>
+                        <button type="button" class="btn btn-info" data-dismiss="modal">Admire My Achievement!</button>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
