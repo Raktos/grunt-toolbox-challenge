@@ -51,13 +51,10 @@ $(document).ready(function() {
         gameBoard.fadeOut(250);
 
         //shuffle the tiles
-        console.log(tiles);
         var shuffledTiles = _.shuffle(tiles);
-        console.log(shuffledTiles);
 
         //select 8 of the shuffled tiles
         var selectedTiles = shuffledTiles.slice(0,8);
-        console.log(selectedTiles);
 
         //create pair sets of selected tiles
         var tilePairs = [];
@@ -65,7 +62,6 @@ $(document).ready(function() {
             tilePairs.push(_.clone(tile));
             tilePairs.push(_.clone(tile));
         });
-        console.log(tilePairs);
         tilePairs = _.shuffle(tilePairs); //shuffle the tile pairs so pairs are not always adjacent
 
         //begin populating the gameboard
