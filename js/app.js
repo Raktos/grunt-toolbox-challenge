@@ -10,6 +10,7 @@ $(document).ready(function() {
     var timer;
     var matches;
     var misses;
+    var score;
 
     //for storing previous moves
     var tileFlipArr;
@@ -179,7 +180,7 @@ $(document).ready(function() {
     }
 
 
-    //start a timer
+    //start and run a timer; also update score
     function startTimer() {
         //stop old timer
         window.clearInterval(timer);
@@ -191,10 +192,7 @@ $(document).ready(function() {
             var elapsedSeconds = Math.floor((_.now() - startTime) / 1000);
             $('#elapsedSeconds').text('Time: ' + elapsedSeconds + ' seconds');
 
-            //stop the timer at 10 seconds
-//            if(win) {
-//                window.clearInterval(timer);
-//            }
+            updateScore(elapsedSeconds);
         }, 1000);
     }
 
@@ -206,11 +204,13 @@ $(document).ready(function() {
 //            win = false;
             matches = 0;
             misses = 0;
+            score = 0;
 
             tileFlipArr = [];
 
             $('#matches').text('Matches: ' + matches + ' (' + (8 - matches) + ' left)');
             $('#misses').text('Misses: ' + misses);
+            $('#score').text('Score: ' + score);
             startTimer();
             stats.fadeIn(250);
         });
@@ -246,12 +246,23 @@ $(document).ready(function() {
     //display win information
     function win() {
         var winModal = $('#winModal');
+        var time = $('#elapsedSeconds').text().replace(/\D/g, '');
+        updateScore(time);
 
         window.clearInterval(timer);
         winModal.find('p').text(
             'Congratulations! You won in ' +
-            $('#elapsedSeconds').text().replace(/\D/g, '') + ' seconds with ' +
+            time + ' seconds with ' +
             misses + ' misses for a total of ' + tileFlipArr.length / 2 + ' turns!');
         winModal.modal();
+    }
+
+    //TODO decide on a score formula
+    //update player score and display
+    function updateScore(time) {
+        //old score formula
+        //score = Math.floor(((matches / (time + 1)) / (misses + 1)) * 10000);
+        score = 1000 * matches - time - 100 * misses;
+        $('#score').text('Score: ' + score);
     }
 }); //onReady
