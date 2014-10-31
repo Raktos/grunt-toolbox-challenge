@@ -36,9 +36,11 @@ $(document).ready(function() {
     $('.helpButton').click(function() {
         var helpModal = $('#helpModal');
 
+        //TODO modal will not dismiss at first, reallow this on help button click
         //swap out button that starts a new game for a button that dismisses the modal
         helpModal.find('.newGameButton').css('display', 'none');
         helpModal.find('.helpDismissButton').css('display', 'inline');
+//        helpModal.modal({backdrop: true});
         helpModal.modal();
     });
 
@@ -136,7 +138,7 @@ $(document).ready(function() {
             var prevTileContainer;
             var prevTile;
 
-            //only flip if he tile was face down
+            //only flip if the tile was face down
             if(!tile.faceUp) {
                 animateFlip(tileContainer, tile);
 
@@ -244,7 +246,6 @@ $(document).ready(function() {
         });
     }
 
-    //TODO display score in winModal
     //display win information
     function win() {
         window.clearInterval(timer);
@@ -252,20 +253,22 @@ $(document).ready(function() {
 
         //get the end time from the text display
         var time = parseInt($('#elapsedSeconds').text().replace(/\D/g, ''));
-        updateScore(time);
+
 
         //populate the winModal
         winModal.find('p').text(
             'Congratulations! You won in ' +
             time + ' seconds with ' +
-            misses + ' misses for a total of ' + tileFlipArr.length / 2 + ' turns!');
+            misses + ' misses for a total of ' + tileFlipArr.length / 2 +
+            ' turns and ' + updateScore(time) + ' points!');
         winModal.modal();
     }
 
     //TODO decide on a score formula
     //update player score and display
     function updateScore(time) {
-        score = Math.floor(((matches / (time + 1)) / (misses + 1)) * 10000);
+        score = Math.floor((matches * matches / (time + 1) / (misses + 1)) * 10000);
         $('#score').text('Score: ' + score);
+        return score;
     }
 }); //onReady
