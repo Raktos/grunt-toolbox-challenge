@@ -11,6 +11,7 @@ $(document).ready(function() {
     var matches;
     var misses;
     var score;
+    var tileDataKey = 'tile';
 
     //for storing previous moves
     var tileFlipArr;
@@ -68,14 +69,11 @@ $(document).ready(function() {
         //begin populating the gameboard
         var row = $(document.createElement('div'));
         row.addClass('gameRow');
-        var tileElem;
+        var tileContainer;
         var flipper;
         var back;
         var face;
-        var backImg;
-        var faceImg;
 
-        //TODO string for the key 'tile' is used more than once, create a defined variable for it maybe
         //populate the gameboard
         _.forEach(tilePairs, function(tile, elemIndex) {
             //create a new row every 4 tiles (max 4 tiles per row)
@@ -85,44 +83,37 @@ $(document).ready(function() {
                 row.addClass('gameRow');
             }
 
-            //TODO backImg and faceImg may not be entirely necessary
             //create each element used in a tile
-            tileElem = $(document.createElement('div'));
+            tileContainer = $(document.createElement('div'));
             flipper = $(document.createElement('div'));
-            back = $(document.createElement('div'));
-            face = $(document.createElement('div'));
-            backImg= $(document.createElement('img'));
-            faceImg = $(document.createElement('img'));
+            back = $(document.createElement('img'));
+            face = $(document.createElement('img'));
 
             //assign each element its necessary class
-            tileElem.addClass('flipContainer');
+            tileContainer.addClass('flipContainer');
             flipper.addClass('flipper');
             back.addClass('back');
             face.addClass('face');
-            backImg.addClass('backImg');
-            faceImg.addClass('faceImg');
 
             //put all the pieces together
-            tileElem.append(flipper);
+            tileContainer.append(flipper);
             flipper.append(back, face);
-            back.append(backImg);
-            face.append(faceImg);
-
-            //assign the tile data to the container that accepts the click event
-            tileElem.data('tile', tile);
 
             //assign the images
-            backImg.attr({
+            back.attr({
                 src: tileBackSrc,
                 alt: 'tile backside'
             });
-            faceImg.attr({
+            face.attr({
                 src: tile.src,
                 alt: 'image of tile ' + tile.tileNum
             });
 
+            //assign the tile data to the container that accepts the click event
+            tileContainer.data(tileDataKey, tile);
+
             //put the tile in the row
-            row.append(tileElem);
+            row.append(tileContainer);
         });
         gameBoard.append(row); // finish gameboard population
 
@@ -135,22 +126,22 @@ $(document).ready(function() {
     function gameplay() {
         //initiates game play on click
         gameBoard.find('.flipContainer').click(function() {
-            var tileElem = $(this);
-            var tile = tileElem.data('tile');
+            var tileContainer = $(this);
+            var tile = tileContainer.data(tileDataKey);
             var flipNum;
-            var prevTileElem;
+            var prevTileContainer;
             var prevTile;
 
             //only flip if he tile was upside down
             if(!tile.faceUp) {
-                animateFlip(tileElem, tile);
-                tileFlipArr.push(tileElem);
+                animateFlip(tileContainer, tile);
+                tileFlipArr.push(tileContainer);
                 flipNum = tileFlipArr.length;
 
                 //if this is an even tile flip
                 if(0 == flipNum % 2) {
-                    prevTileElem = tileFlipArr[flipNum - 2];
-                    prevTile = prevTileElem.data('tile');
+                    prevTileContainer = tileFlipArr[flipNum - 2];
+                    prevTile = prevTileContainer.data(tileDataKey);
 
                     //check for a matched pair
                     if(tile.tileNum == prevTile.tileNum) {
@@ -158,8 +149,8 @@ $(document).ready(function() {
                     } else {
                         ++misses;
                         setTimeout(function() {
-                            animateFlip(tileElem, tile);
-                            animateFlip(prevTileElem, prevTile);
+                            animateFlip(tileContainer, tile);
+                            animateFlip(prevTileContainer, prevTile);
                         }, 750); //1 second was too long.
                     }
                 }
@@ -174,8 +165,8 @@ $(document).ready(function() {
     }
 
     //animate the flip
-    function animateFlip(tileElem, tile) {
-        tileElem.find('.flipper').toggleClass('flipperFlip');
+    function animateFlip(tileContainer, tile) {
+        tileContainer.find('.flipper').toggleClass('flipperFlip');
         tile.faceUp = !tile.faceUp;
     }
 
@@ -243,10 +234,11 @@ $(document).ready(function() {
         });
     }
 
+    //TODO display score in winModal
     //display win information
     function win() {
         var winModal = $('#winModal');
-        var time = $('#elapsedSeconds').text().replace(/\D/g, '');
+        var time = parseInt($('#elapsedSeconds').text().replace(/\D/g, ''));
         updateScore(time);
 
         window.clearInterval(timer);
@@ -261,8 +253,7 @@ $(document).ready(function() {
     //update player score and display
     function updateScore(time) {
         //old score formula
-        //score = Math.floor(((matches / (time + 1)) / (misses + 1)) * 10000);
-        score = 1000 * matches - time - 100 * misses;
+        score = Math.floor(((matches / (time + 1)) / (misses + 1)) * 10000);
         $('#score').text('Score: ' + score);
     }
 }); //onReady
