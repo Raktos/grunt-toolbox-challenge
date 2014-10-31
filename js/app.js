@@ -16,6 +16,7 @@ $(document).ready(function() {
     //for storing previous moves
     var tileFlipArr;
 
+    //general purpose loop incrementer
     var  i;
 
     //fills an array with objects for the images
@@ -31,9 +32,11 @@ $(document).ready(function() {
     //resize tiles on window resize event
     $(window).resize(tileScale);
 
-    //Opens instructions dialogue, changed buttons
+    //Opens instructions dialogue
     $('.helpButton').click(function() {
         var helpModal = $('#helpModal');
+
+        //swap out button that starts a new game for a button that dismisses the modal
         helpModal.find('.newGameButton').css('display', 'none');
         helpModal.find('.helpDismissButton').css('display', 'inline');
         helpModal.modal();
@@ -76,7 +79,7 @@ $(document).ready(function() {
 
         //populate the gameboard
         _.forEach(tilePairs, function(tile, elemIndex) {
-            //create a new row every 4 tiles (max 4 tiles per row)
+            //create a new row every 4 tiles
             if(elemIndex > 0 && 0 == elemIndex % 4) {
                 gameBoard.append(row);
                 row = $(document.createElement('div'));
@@ -90,7 +93,7 @@ $(document).ready(function() {
             face = $(document.createElement('img'));
 
             //assign each element its necessary class
-            tileContainer.addClass('flipContainer');
+            tileContainer.addClass('tileContainer');
             flipper.addClass('flipper');
             back.addClass('back');
             face.addClass('face');
@@ -117,6 +120,7 @@ $(document).ready(function() {
         });
         gameBoard.append(row); // finish gameboard population
 
+        //scale tiles to current window size before they're visible
         tileScale();
 
         gameBoard.fadeIn(250);
@@ -125,21 +129,26 @@ $(document).ready(function() {
     //registers clicks event to all tiles
     function gameplay() {
         //initiates game play on click
-        gameBoard.find('.flipContainer').click(function() {
+        gameBoard.find('.tileContainer').click(function() {
             var tileContainer = $(this);
             var tile = tileContainer.data(tileDataKey);
             var flipNum;
             var prevTileContainer;
             var prevTile;
 
-            //only flip if he tile was upside down
+            //only flip if he tile was face down
             if(!tile.faceUp) {
                 animateFlip(tileContainer, tile);
+
+                //record the move until the end of the game
                 tileFlipArr.push(tileContainer);
+
+                //store the current move # just in case they click really fast and length changes before the check finishes
                 flipNum = tileFlipArr.length;
 
                 //if this is an even tile flip
                 if(0 == flipNum % 2) {
+                    //get the move immediately before this one
                     prevTileContainer = tileFlipArr[flipNum - 2];
                     prevTile = prevTileContainer.data(tileDataKey);
 
@@ -151,7 +160,7 @@ $(document).ready(function() {
                         setTimeout(function() {
                             animateFlip(tileContainer, tile);
                             animateFlip(prevTileContainer, prevTile);
-                        }, 750); //1 second was too long.
+                        }, 750); //1 second was too long. It irritated me during testing.
                     }
                 }
                 $('#matches').text('Matches: ' + matches + ' (' + (8 - matches) + ' left)');
@@ -161,8 +170,8 @@ $(document).ready(function() {
             if(matches >= 8) {
                 win();
             }
-        }); //gameplay
-    }
+        });
+    } //gameplay
 
     //animate the flip
     function animateFlip(tileContainer, tile) {
@@ -179,6 +188,8 @@ $(document).ready(function() {
 
         //start new timer
         var startTime = _.now();
+
+        //increment timer, also updates score which is dependant on time
         timer = window.setInterval(function() {
             var elapsedSeconds = Math.floor((_.now() - startTime) / 1000);
             $('#elapsedSeconds').text('Time: ' + elapsedSeconds + ' seconds');
@@ -192,13 +203,12 @@ $(document).ready(function() {
         //fade out before changing anything
         stats.fadeOut(250, function() {
             //reset stats to 0
-//            win = false;
             matches = 0;
             misses = 0;
             score = 0;
-
             tileFlipArr = [];
 
+            //reset the visible text
             $('#matches').text('Matches: ' + matches + ' (' + (8 - matches) + ' left)');
             $('#misses').text('Misses: ' + misses);
             $('#score').text('Score: ' + score);
@@ -208,7 +218,6 @@ $(document).ready(function() {
     }
 
     //scale tiles to window size
-    //also scales columns
     function tileScale() {
         var width = window.innerWidth * 0.15;
         var height = window.innerHeight * 0.2;
@@ -221,13 +230,14 @@ $(document).ready(function() {
             edge = height;
         }
 
-        //set image sizing
-        gameBoard.find('.flipContainer').css({
+        //apply margins to outermost element in a tile
+        gameBoard.find('.tileContainer').css({
             'margin-right':edge / 40 + 'px',
             'margin-bottom':edge / 40 + 'px'
         });
 
-        gameBoard.find('.flipContainer, .flipper, .back, .face, .backImg, .faceImg').css({
+        //apply scaling to all elements in a tile
+        gameBoard.find('.tileContainer, .flipper, .back, .face').css({
             'height':edge + 'px',
             'width':edge + 'px',
             'border-radius':edge / 20 + 'px'
@@ -237,11 +247,14 @@ $(document).ready(function() {
     //TODO display score in winModal
     //display win information
     function win() {
+        window.clearInterval(timer);
         var winModal = $('#winModal');
+
+        //get the end time from the text display
         var time = parseInt($('#elapsedSeconds').text().replace(/\D/g, ''));
         updateScore(time);
 
-        window.clearInterval(timer);
+        //populate the winModal
         winModal.find('p').text(
             'Congratulations! You won in ' +
             time + ' seconds with ' +
@@ -252,7 +265,6 @@ $(document).ready(function() {
     //TODO decide on a score formula
     //update player score and display
     function updateScore(time) {
-        //old score formula
         score = Math.floor(((matches / (time + 1)) / (misses + 1)) * 10000);
         $('#score').text('Score: ' + score);
     }

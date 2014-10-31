@@ -50,12 +50,12 @@ main {
     margin-top: 0;
 }
 
-.flipContainer, .flipper, .back, .face, .backImg, .faceImg {
+.tileContainer, .flipper, .back, .face, .backImg, .faceImg {
     width: 200px;
     height: 200px;
 }
 
-.flipContainer {
+.tileContainer {
     margin-right: 5px;
     margin-bottom: 5px;
     border: 2px solid #000;
@@ -68,7 +68,7 @@ main {
 
 /*3d transform styling*/
 
-.flipContainer {
+.tileContainer {
     /*perspective*/
     -webkit-perspective:1000;
     -moz-perspective:1000;
