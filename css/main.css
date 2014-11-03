@@ -1,17 +1,10 @@
 body {
     background-color: #000;
     vertical-align: top;
+    padding-left: 10%;
 }
 main, header, footer {
     color: #DDD;
-}
-
-header {
-    margin-left: 1em;
-}
-
-main {
-    padding-left: 10%;
 }
 
 .btn-info {

@@ -36,11 +36,11 @@ $(document).ready(function() {
     $('.helpButton').click(function() {
         var helpModal = $('#helpModal');
 
-        //TODO modal will not dismiss at first, reallow this on help button click
+        //TODO modal will not dismiss on outside click at first, reallow this on help button click; set win modal to be dismissable on outside click by default when you get this working
         //swap out button that starts a new game for a button that dismisses the modal
         helpModal.find('.newGameButton').css('display', 'none');
         helpModal.find('.helpDismissButton').css('display', 'inline');
-//        helpModal.modal({backdrop: true});
+        //helpModal.modal({backdrop: true});
         helpModal.modal();
     });
 
